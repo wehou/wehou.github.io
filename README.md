@@ -1,4 +1,4 @@
-# wehou的学习小站
+# 欢迎来到wehou的学习小站
 hello, I am wehou.
 
 hou.bot.cd
