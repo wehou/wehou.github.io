@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wehou - Learning Station / 学习小站</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0f; --surface: #16161a; --surface-2: #1e1e24;
+  --text: #e8e8ed; --text-dim: #94949e; --accent: #4fc3f7;
+  --accent-warm: #ff8a65; --accent-green: #66bb6a; --accent-gold: #ffd54f;
+  --border: #2a2a32; --glow: rgba(79, 195, 247, 0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+
+.profile-banner { width: 100%; height: 180px; overflow: hidden; position: relative; background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 30%, #0a1628 60%, #162447 100%); }
+.profile-banner::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, var(--bg)); }
+.profile-banner-stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
+.star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 3s infinite; }
+@keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+.site-nav {
+  position: sticky; top: 0; z-index: 90; background: rgba(12,12,15,0.92);
+  backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 32px;
+}
+.nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 0; }
+.nav-brand { font-weight: 700; font-size: 1.05em; margin-right: 32px; padding: 14px 0; color: var(--text); }
+.nav-tabs { display: flex; gap: 0; overflow-x: auto; }
+.nav-tab {
+  padding: 14px 16px; font-size: 0.88em; color: var(--text-dim); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; user-select: none;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.page { display: none; padding: 60px 0 80px; min-height: 70vh; }
+.page.active { display: block; }
+
+.hero { padding: 40px 0 60px; position: relative; overflow: hidden; }
+.hero::before {
+  content: ''; position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); pointer-events: none;
+}
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
+.hero-right { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.hero-avatar {
+  width: 140px; height: 140px; border-radius: 50%; overflow: hidden;
+  border: 3px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+  font-size: 3em; color: var(--accent);
+}
+.hero-name {
+  font-size: 3em; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--text) 60%, var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-name-cn { font-size: 1.05em; color: var(--text-dim); margin-bottom: 16px; }
+.hero-tagline { font-size: 1.05em; color: var(--text-dim); max-width: 560px; margin-bottom: 8px; line-height: 1.8; }
+.hero-tagline a { color: var(--accent); }
+.hero-signature { font-size: 0.88em; color: var(--text-dim); margin-bottom: 20px; opacity: 0.7; }
+
+.social-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.social-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px;
+  font-size: 0.82em; color: var(--text-dim); transition: all 0.2s;
+}
+.social-link:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
+.social-link svg { flex-shrink: 0; }
+
+.hero-stats {
+  display: flex; flex-direction: column; gap: 12px; padding: 20px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; min-width: 160px;
+}
+.stat-item { text-align: center; }
+.stat-num { font-size: 1.6em; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.section-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8em; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%); border-radius: 1px; }
+.timeline-item { position: relative; margin-bottom: 28px; padding-left: 20px; }
+.timeline-item::before { content: ''; position: absolute; left: -28px; top: 10px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+.timeline-period { font-family: 'JetBrains Mono', monospace; font-size: 0.78em; color: var(--accent-warm); margin-bottom: 3px; }
+.timeline-title { font-weight: 600; margin-bottom: 3px; font-size: 0.95em; }
+.timeline-desc { font-size: 0.88em; color: var(--text-dim); }
+
+.research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.research-card { padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: all 0.2s; }
+.research-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.research-icon { font-size: 1.4em; margin-bottom: 8px; }
+.research-name { font-weight: 600; margin-bottom: 4px; font-size: 0.92em; }
+.research-desc { font-size: 0.82em; color: var(--text-dim); }
+
+.paper-list { display: flex; flex-direction: column; gap: 10px; }
+.paper-item {
+  padding: 14px 18px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; transition: all 0.2s; display: grid;
+  grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+  text-decoration: none; color: inherit;
+}
+.paper-item:hover { border-color: var(--accent); background: var(--surface-2); opacity: 1; }
+.paper-title { font-weight: 500; font-size: 0.92em; margin-bottom: 3px; color: var(--text); }
+.paper-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.paper-venue { font-size: 0.78em; color: var(--text-dim); }
+.paper-citations {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78em; color: var(--accent-green);
+  white-space: nowrap; padding: 3px 8px; background: rgba(102,187,106,0.08); border-radius: 4px;
+}
+.paper-badge {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 0.68em; font-weight: 600;
+  padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.badge-nature { background: rgba(255,213,79,0.15); color: var(--accent-gold); border: 1px solid rgba(255,213,79,0.3); }
+.badge-best { background: rgba(255,138,101,0.15); color: var(--accent-warm); border: 1px solid rgba(255,138,101,0.3); }
+.badge-new { background: rgba(79,195,247,0.15); color: var(--accent); border: 1px solid rgba(79,195,247,0.3); }
+.paper-item.featured { border: 1px solid rgba(255,213,79,0.3); background: linear-gradient(135deg, rgba(255,213,79,0.03) 0%, var(--surface) 100%); }
+.paper-item.featured:hover { border-color: var(--accent-gold); }
+.paper-more { text-align: center; margin-top: 16px; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; color: var(--text-dim); font-size: 0.88em; }
+
+.project-showcase {
+  display: flex; gap: 16px; align-items: stretch; padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(79,195,247,0.04) 0%, var(--surface) 100%);
+  border: 1px solid rgba(79,195,247,0.2); border-radius: 8px;
+  text-decoration: none; transition: all 0.2s; overflow: hidden;
+}
+.project-showcase:hover { border-color: var(--accent); opacity: 1; }
+.project-showcase-icon {
+  width: 80px; height: 80px; border-radius: 12px; background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center; font-size: 2.5em; flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.project-showcase-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.project-showcase-title { font-weight: 600; font-size: 0.95em; margin-bottom: 4px; color: var(--text); }
+.project-showcase-desc { font-size: 0.85em; color: var(--text-dim); line-height: 1.6; }
+
+.collab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.collab-card {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  transition: all 0.2s; text-decoration: none; color: inherit;
+}
+.collab-card:hover { border-color: var(--accent); opacity: 1; background: var(--surface-2); }
+.collab-avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1em;
+  flex-shrink: 0; border: 1px solid var(--border); color: var(--text-dim);
+}
+.collab-name { font-weight: 500; font-size: 0.9em; color: var(--text); }
+.collab-aff { font-size: 0.78em; color: var(--text-dim); }
+
+.collab-section { margin-bottom: 32px; }
+.collab-section-title { font-size: 0.85em; font-weight: 600; color: var(--text-dim); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.82em; }
+
+@media (max-width: 700px) {
+  .profile-banner { height: 120px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-right { flex-direction: row; align-items: center; }
+  .hero-avatar { width: 80px; height: 80px; font-size: 2em; }
+  .hero-name { font-size: 2.2em; }
+  .hero-stats { flex-direction: row; justify-content: space-around; }
+  .research-grid { grid-template-columns: 1fr; }
+  .paper-item { grid-template-columns: 1fr; gap: 6px; }
+  .collab-grid { grid-template-columns: 1fr; }
+  .nav-brand { display: none; }
+  .project-showcase { flex-direction: column; align-items: center; text-align: center; }
+  .project-showcase-icon { width: 60px; height: 60px; font-size: 2em; }
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.page.active { animation: fadeUp 0.4s ease-out; }
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.float-anim { animation: float 4s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<div class="profile-banner">
+  <div class="profile-banner-stars" id="stars"></div>
+</div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <span class="nav-brand">wehou</span>
+    <div class="nav-tabs">
+      <div class="nav-tab active" data-page="home">Home</div>
+      <div class="nav-tab" data-page="projects">Projects</div>
+      <div class="nav-tab" data-page="about">About</div>
+      <div class="nav-tab" data-page="links">Links</div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+<div class="page active" id="page-home">
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-name">wehou</h1>
+      <p class="hero-name-cn">欢迎来到wehou的学习小站</p>
+      <p class="hero-tagline">
+        Hello, I am <strong>wehou</strong>. Welcome to my learning station!<br>
+        Exploring the world through coding, math, and poetry.<br>
+        Building fun projects and learning every day.
+      </p>
+      <p class="hero-signature">Stay curious. Keep learning. | 保持好奇，持续学习</p>
+      <div class="social-links">
+        <a class="social-link" href="https://wehou.github.io" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          @wehou
+        </a>
+        <a class="social-link" href="https://wehou.cc.cd" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          wehou.cc.cd
+        </a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-avatar float-anim">🚀</div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Projects</div></div>
+        <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
+        <div class="stat-item"><div class="stat-num">365</div><div class="stat-label">Days/Year</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2 class="section-title">Interests / 兴趣方向</h2>
+  <div class="research-grid">
+    <div class="research-card"><div class="research-icon">🧮</div><div class="research-name">Math Puzzles / 数学拼图</div><div class="research-desc">Fun math puzzle games for learning and exploration.</div></div>
+    <div class="research-card"><div class="research-icon">📜</div><div class="research-name">Classical Poetry / 古诗词</div><div class="research-desc">Essential ancient Chinese poems for students.</div></div>
+    <div class="research-card"><div class="research-icon">💻</div><div class="research-name">Coding / 编程</div><div class="research-desc">Building interactive web projects and games.</div></div>
+    <div class="research-card"><div class="research-icon">🎮</div><div class="research-name">Interactive Games / 互动游戏</div><div class="research-desc">Learning through play and interactive experiences.</div></div>
+  </div>
+</section>
+</div>
+
+<div class="page" id="page-projects">
+<section>
+  <h2 class="section-title">Projects / 项目作品</h2>
+  <div class="paper-list">
+
+    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
+      <div class="project-showcase-icon">🧮</div>
+      <div class="project-showcase-info">
+        <div class="project-showcase-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
+        <div class="project-showcase-desc">An interactive math puzzle game designed for 3rd graders. Practice addition, subtraction, multiplication and division through fun puzzles!</div>
+      </div>
+    </a>
+
+    <a class="project-showcase" href="https://wehou.github.io/poem-game/" target="_blank">
+      <div class="project-showcase-icon">📜</div>
+      <div class="project-showcase-info">
+        <div class="project-showcase-title">三年级必备古诗18首 / Grade 3 Essential 18 Ancient Poems</div>
+        <div class="project-showcase-desc">Learn and memorize 18 essential ancient Chinese poems for 3rd grade students. Interactive poetry learning experience!</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section style="margin-top: 40px;">
+  <h2 class="section-title">Project Timeline / 项目时间线</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-period">2024</div>
+      <div class="timeline-title">三年级必备古诗18首 / Grade 3 Essential Poems</div>
+      <div class="timeline-desc">Interactive poetry learning game for 3rd grade students. Memorize and appreciate classical Chinese poetry.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-period">2024</div>
+      <div class="timeline-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
+      <div class="timeline-desc">Fun math puzzle game designed for 3rd graders. Practice arithmetic through engaging puzzles.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="page" id="page-about">
+<section>
+  <h2 class="section-title">About Me / 关于我</h2>
+  <div class="paper-list">
+    <div class="paper-item featured" style="cursor:default">
+      <div>
+        <div class="paper-title">wehou</div>
+        <div class="paper-meta"><span class="paper-venue">Learner & Creator / 学习者与创造者</span></div>
+        <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim); line-height:1.5;">
+          Hello! I'm wehou, a curious learner who loves exploring the world through coding, math, and poetry. I build fun interactive projects to make learning more enjoyable. Welcome to my little learning station on the internet!
+        </p>
+        <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim); line-height:1.5;">
+          你好！我是wehou，一个充满好奇心的学习者，喜欢通过编程、数学和诗歌来探索世界。我制作有趣的互动项目，让学习变得更加愉快。欢迎来到我的网络学习小站！
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="margin-top: 40px;">
+  <h2 class="section-title">Learning Journey / 学习之旅</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-period">Now / 现在</div>
+      <div class="timeline-title">Exploring & Building / 探索与创造</div>
+      <div class="timeline-desc">Creating interactive learning projects and games. Making education fun and accessible.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-period">Ongoing / 持续中</div>
+      <div class="timeline-title">Math & Poetry / 数学与诗歌</div>
+      <div class="timeline-desc">Building math puzzle games and poetry learning tools for students.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-period">Always / 始终</div>
+      <div class="timeline-title">Stay Curious / 保持好奇</div>
+      <div class="timeline-desc">Learning new things every day. The journey of a thousand miles begins with a single step.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="page" id="page-links">
+<section>
+  <h2 class="section-title">Links & Resources / 链接与资源</h2>
+
+  <div class="collab-section">
+    <div class="collab-section-title">My Sites / 我的站点</div>
+    <div class="collab-grid">
+      <a class="collab-card" href="https://wehou.github.io" target="_blank">
+        <div class="collab-avatar">W</div>
+        <div><div class="collab-name">wehou.github.io</div><div class="collab-aff">GitHub Pages 主站</div></div>
+      </a>
+      <a class="collab-card" href="https://wehou.cc.cd" target="_blank">
+        <div class="collab-avatar">C</div>
+        <div><div class="collab-name">wehou.cc.cd</div><div class="collab-aff">自定义域名</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="collab-section">
+    <div class="collab-section-title">Projects / 项目链接</div>
+    <div class="collab-grid">
+      <a class="collab-card" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
+        <div class="collab-avatar">🧮</div>
+        <div><div class="collab-name">Math Puzzle Game / 数学拼图游戏</div><div class="collab-aff">三年级数学拼图互动游戏</div></div>
+      </a>
+      <a class="collab-card" href="https://wehou.github.io/poem-game/" target="_blank">
+        <div class="collab-avatar">📜</div>
+        <div><div class="collab-name">Poem Game / 古诗游戏</div><div class="collab-aff">三年级必备古诗18首</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="collab-section">
+    <div class="collab-section-title">Social / 社交</div>
+    <div class="collab-grid">
+      <a class="collab-card" href="https://github.com/wehou" target="_blank">
+        <div class="collab-avatar">G</div>
+        <div><div class="collab-name">GitHub</div><div class="collab-aff">@wehou</div></div>
+      </a>
+    </div>
+  </div>
+
+</section>
+</div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 wehou &middot; <a href="https://wehou.github.io">wehou.github.io</a> &middot; <a href="https://wehou.cc.cd">wehou.cc.cd</a></p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-' + tab.dataset.page).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+(function() {
+  var container = document.getElementById('stars');
+  for (var i = 0; i < 60; i++) {
+    var star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (2 + Math.random() * 3) + 's';
+    if (Math.random() > 0.7) {
+      star.style.width = '3px';
+      star.style.height = '3px';
+    }
+    container.appendChild(star);
+  }
+})();
+</script>
+
+</body>
+</html>
