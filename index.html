@@ -315,17 +315,78 @@ footer a:hover{color:var(--coral)}
 
 /* ============ 响应式 ============ */
 @media(max-width:767px){
-  .hero{padding:32px 0 40px}
-  .hero-grid{grid-template-columns:1fr;gap:32px}
-  .hero-right{flex-direction:row;align-items:center;justify-content:flex-start;gap:24px}
-  .hero-avatar{width:88px;height:88px;font-size:40px}
-  .hero-name{font-size:40px}
-  .hero-stats{flex-direction:row;justify-content:space-around;min-width:0;flex:1}
-  .interest-grid{grid-template-columns:1fr 1fr}
-  .project-card{flex-direction:column;align-items:flex-start;gap:12px}
+  .container{padding:0 16px}
+  .nav-inner{padding:0 16px;height:54px;gap:12px}
+  .nav-brand{font-size:17px}
+  .nav-brand-dot{width:8px;height:8px}
+  .nav-tab{padding:6px 10px;font-size:12px;border-radius:5px}
+
+  .hero{padding:24px 0 28px}
+  .hero-grid{grid-template-columns:1fr;gap:20px}
+  .hero-eyebrow{font-size:11px;margin-bottom:12px}
+  .hero-eyebrow::before{width:18px}
+  .hero-name{font-size:36px;margin-bottom:6px}
+  .hero-name-cn{font-size:15px;margin-bottom:18px}
+  .hero-tagline{font-size:14px;line-height:1.65;margin-bottom:10px}
+  .hero-signature{font-size:13px;margin-bottom:18px;padding-left:12px}
+  .social-link{padding:6px 11px;font-size:12px}
+
+  .hero-right{flex-direction:row;align-items:center;justify-content:flex-start;gap:16px}
+  .hero-avatar{width:72px;height:72px;font-size:28px}
+  .hero-stats{
+    flex-direction:row;justify-content:space-around;
+    min-width:0;flex:1;padding:12px 14px;gap:8px;
+  }
+  .stat-num{font-size:20px}
+  .stat-label{font-size:9px;margin-top:2px}
+
+  .hero-banner{aspect-ratio:16/9;max-height:200px;border-radius:var(--radius);margin-bottom:8px}
+
+  .page{padding:32px 0 56px}
+  section{margin-bottom:36px}
+  .section-title{font-size:11px;margin-bottom:18px;gap:10px}
+
+  .project-card{padding:14px 16px;gap:14px}
+  .project-icon{width:56px;height:56px;font-size:26px;border-radius:8px}
+  .project-title{font-size:15px;margin-bottom:4px}
+  .project-desc{font-size:13px;line-height:1.5}
   .project-arrow{display:none}
-  .nav-brand{font-size:18px}
-  .nav-tab{padding:6px 10px;font-size:13px}
+
+  .interest-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .interest-card{padding:14px}
+  .interest-icon{width:32px;height:32px;font-size:20px;margin-bottom:8px}
+  .interest-name{font-size:14px;margin-bottom:3px}
+  .interest-desc{font-size:12px;line-height:1.4}
+
+  .timeline{padding-left:22px}
+  .timeline-item{margin-bottom:22px;padding-left:6px}
+  .timeline-item::before{left:-22px;width:11px;height:11px;border-width:2px}
+  .timeline-period{font-size:10px}
+  .timeline-title{font-size:15px}
+  .timeline-desc{font-size:12px;line-height:1.5}
+
+  .about-card{padding:20px 22px;border-radius:var(--radius)}
+  .about-name{font-size:20px}
+  .about-role{font-size:11px;margin-bottom:12px}
+  .about-text{font-size:13px;line-height:1.65}
+
+  .link-grid{grid-template-columns:1fr;gap:8px}
+  .link-card{padding:12px 14px}
+  .link-avatar{width:32px;height:32px;font-size:14px}
+  .link-name{font-size:13px}
+  .link-aff{font-size:11px}
+
+  footer{padding:24px 0;font-size:12px}
+}
+
+/* 超小屏（≤380px）进一步优化 */
+@media(max-width:380px){
+  .hero-name{font-size:30px}
+  .hero-avatar{width:64px;height:64px;font-size:24px}
+  .hero-stats{padding:10px;gap:6px}
+  .stat-num{font-size:18px}
+  .project-icon{width:48px;height:48px;font-size:22px}
+  .interest-grid{grid-template-columns:1fr}
 }
 
 /* ============ 装饰动画 ============ */
@@ -399,7 +460,7 @@ footer a:hover{color:var(--coral)}
     </div>
     <div class="hero-right">
       <div class="hero-avatar float-anim">
-        <img src="images/avatar.png" alt="wehou avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+        <img src="images/avatar.png" alt="wehou avatar" width="128" height="128" loading="eager" decoding="async" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
       </div>
       <div class="hero-stats">
         <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Projects</div></div>
