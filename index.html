@@ -3,204 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>wehou - Learning Station / 学习小站</title>
+<title>wehou · Learning Station / 学习小站</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0c0c0f; --surface: #16161a; --surface-2: #1e1e24;
-  --text: #e8e8ed; --text-dim: #94949e; --accent: #4fc3f7;
-  --accent-warm: #ff8a65; --accent-green: #66bb6a; --accent-gold: #ffd54f;
-  --border: #2a2a32; --glow: rgba(79, 195, 247, 0.08);
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; }
-.mono { font-family: 'JetBrains Mono', monospace; }
-a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
-a:hover { opacity: 0.8; }
-.container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
-
-.profile-banner { width: 100%; height: 180px; overflow: hidden; position: relative; background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 30%, #0a1628 60%, #162447 100%); }
-.profile-banner::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(transparent, var(--bg)); }
-.profile-banner-stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; }
-.star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 3s infinite; }
-@keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-
-.site-nav {
-  position: sticky; top: 0; z-index: 90; background: rgba(12,12,15,0.92);
-  backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 32px;
-}
-.nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 0; }
-.nav-brand { font-weight: 700; font-size: 1.05em; margin-right: 32px; padding: 14px 0; color: var(--text); }
-.nav-tabs { display: flex; gap: 0; overflow-x: auto; }
-.nav-tab {
-  padding: 14px 16px; font-size: 0.88em; color: var(--text-dim); cursor: pointer;
-  border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; user-select: none;
-}
-.nav-tab:hover { color: var(--text); }
-.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-.page { display: none; padding: 60px 0 80px; min-height: 70vh; }
-.page.active { display: block; }
-
-.hero { padding: 40px 0 60px; position: relative; overflow: hidden; }
-.hero::before {
-  content: ''; position: absolute; top: -200px; right: -200px;
-  width: 600px; height: 600px; background: radial-gradient(circle, var(--glow) 0%, transparent 70%); pointer-events: none;
-}
-.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
-.hero-right { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.hero-avatar {
-  width: 140px; height: 140px; border-radius: 50%; overflow: hidden;
-  border: 3px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  background: var(--surface); display: flex; align-items: center; justify-content: center;
-  font-size: 3em; color: var(--accent);
-}
-.hero-name {
-  font-size: 3em; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--text) 60%, var(--accent));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.hero-name-cn { font-size: 1.05em; color: var(--text-dim); margin-bottom: 16px; }
-.hero-tagline { font-size: 1.05em; color: var(--text-dim); max-width: 560px; margin-bottom: 8px; line-height: 1.8; }
-.hero-tagline a { color: var(--accent); }
-.hero-signature { font-size: 0.88em; color: var(--text-dim); margin-bottom: 20px; opacity: 0.7; }
-
-.social-links { display: flex; gap: 10px; flex-wrap: wrap; }
-.social-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px;
-  font-size: 0.82em; color: var(--text-dim); transition: all 0.2s;
-}
-.social-link:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
-.social-link svg { flex-shrink: 0; }
-
-.hero-stats {
-  display: flex; flex-direction: column; gap: 12px; padding: 20px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; min-width: 160px;
-}
-.stat-item { text-align: center; }
-.stat-num { font-size: 1.6em; font-weight: 700; color: var(--accent); }
-.stat-label { font-size: 0.72em; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-
-.section-title {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.8em; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 28px;
-  display: flex; align-items: center; gap: 12px;
-}
-.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-.timeline { position: relative; padding-left: 24px; }
-.timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%); border-radius: 1px; }
-.timeline-item { position: relative; margin-bottom: 28px; padding-left: 20px; }
-.timeline-item::before { content: ''; position: absolute; left: -28px; top: 10px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
-.timeline-period { font-family: 'JetBrains Mono', monospace; font-size: 0.78em; color: var(--accent-warm); margin-bottom: 3px; }
-.timeline-title { font-weight: 600; margin-bottom: 3px; font-size: 0.95em; }
-.timeline-desc { font-size: 0.88em; color: var(--text-dim); }
-
-.research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
-.research-card { padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; transition: all 0.2s; }
-.research-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.research-icon { font-size: 1.4em; margin-bottom: 8px; }
-.research-name { font-weight: 600; margin-bottom: 4px; font-size: 0.92em; }
-.research-desc { font-size: 0.82em; color: var(--text-dim); }
-
-.paper-list { display: flex; flex-direction: column; gap: 10px; }
-.paper-item {
-  padding: 14px 18px; background: var(--surface); border: 1px solid var(--border);
-  border-radius: 8px; transition: all 0.2s; display: grid;
-  grid-template-columns: 1fr auto; gap: 14px; align-items: center;
-  text-decoration: none; color: inherit;
-}
-.paper-item:hover { border-color: var(--accent); background: var(--surface-2); opacity: 1; }
-.paper-title { font-weight: 500; font-size: 0.92em; margin-bottom: 3px; color: var(--text); }
-.paper-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.paper-venue { font-size: 0.78em; color: var(--text-dim); }
-.paper-citations {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.78em; color: var(--accent-green);
-  white-space: nowrap; padding: 3px 8px; background: rgba(102,187,106,0.08); border-radius: 4px;
-}
-.paper-badge {
-  display: inline-flex; align-items: center; gap: 3px; font-size: 0.68em; font-weight: 600;
-  padding: 2px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.03em;
-}
-.badge-nature { background: rgba(255,213,79,0.15); color: var(--accent-gold); border: 1px solid rgba(255,213,79,0.3); }
-.badge-best { background: rgba(255,138,101,0.15); color: var(--accent-warm); border: 1px solid rgba(255,138,101,0.3); }
-.badge-new { background: rgba(79,195,247,0.15); color: var(--accent); border: 1px solid rgba(79,195,247,0.3); }
-.paper-item.featured { border: 1px solid rgba(255,213,79,0.3); background: linear-gradient(135deg, rgba(255,213,79,0.03) 0%, var(--surface) 100%); }
-.paper-item.featured:hover { border-color: var(--accent-gold); }
-.paper-more { text-align: center; margin-top: 16px; padding: 10px; border: 1px dashed var(--border); border-radius: 8px; color: var(--text-dim); font-size: 0.88em; }
-
-.project-showcase {
-  display: flex; gap: 16px; align-items: stretch; padding: 14px 18px;
-  background: linear-gradient(135deg, rgba(79,195,247,0.04) 0%, var(--surface) 100%);
-  border: 1px solid rgba(79,195,247,0.2); border-radius: 8px;
-  text-decoration: none; transition: all 0.2s; overflow: hidden;
-}
-.project-showcase:hover { border-color: var(--accent); opacity: 1; }
-.project-showcase-icon {
-  width: 80px; height: 80px; border-radius: 12px; background: var(--surface-2);
-  display: flex; align-items: center; justify-content: center; font-size: 2.5em; flex-shrink: 0;
-  border: 1px solid var(--border);
-}
-.project-showcase-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.project-showcase-title { font-weight: 600; font-size: 0.95em; margin-bottom: 4px; color: var(--text); }
-.project-showcase-desc { font-size: 0.85em; color: var(--text-dim); line-height: 1.6; }
-
-.collab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.collab-card {
-  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-  transition: all 0.2s; text-decoration: none; color: inherit;
-}
-.collab-card:hover { border-color: var(--accent); opacity: 1; background: var(--surface-2); }
-.collab-avatar {
-  width: 40px; height: 40px; border-radius: 50%; background: var(--surface-2);
-  display: flex; align-items: center; justify-content: center; font-size: 1.1em;
-  flex-shrink: 0; border: 1px solid var(--border); color: var(--text-dim);
-}
-.collab-name { font-weight: 500; font-size: 0.9em; color: var(--text); }
-.collab-aff { font-size: 0.78em; color: var(--text-dim); }
-
-.collab-section { margin-bottom: 32px; }
-.collab-section-title { font-size: 0.85em; font-weight: 600; color: var(--text-dim); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-
-footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.82em; }
-
-@media (max-width: 700px) {
-  .profile-banner { height: 120px; }
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-right { flex-direction: row; align-items: center; }
-  .hero-avatar { width: 80px; height: 80px; font-size: 2em; }
-  .hero-name { font-size: 2.2em; }
-  .hero-stats { flex-direction: row; justify-content: space-around; }
-  .research-grid { grid-template-columns: 1fr; }
-  .paper-item { grid-template-columns: 1fr; gap: 6px; }
-  .collab-grid { grid-template-columns: 1fr; }
-  .nav-brand { display: none; }
-  .project-showcase { flex-direction: column; align-items: center; text-align: center; }
-  .project-showcase-icon { width: 60px; height: 60px; font-size: 2em; }
+/* ============ Claude 设计风格变量 ============ */
+:root{
+  --bg:#FAF9F5;
+  --bg-elevated:#FFFFFF;
+  --bg-soft:#F5F4ED;
+  --bg-tint:#EFEEE5;
+  --border:#E5E2D9;
+  --border-strong:#D4D0C4;
+  --coral:#D97757;
+  --coral-deep:#C15F3F;
+  --coral-tint:#F5E6DF;
+  --text:#1F1F1F;
+  --text-soft:#3D3D3D;
+  --text-muted:#6B6B6B;
+  --text-light:#9A9A9A;
+  --accent:#2C5F5D;
+  --accent-soft:#E8EFEE;
+  --warn:#B8860B;
+  --warn-tint:#FAF3E0;
+  --positive:#4A7C59;
+  --positive-tint:#E8F0EA;
+  --shadow-sm:0 1px 2px rgba(31,31,31,.04),0 1px 3px rgba(31,31,31,.06);
+  --shadow:0 2px 8px rgba(31,31,31,.06),0 1px 3px rgba(31,31,31,.04);
+  --shadow-lg:0 8px 24px rgba(31,31,31,.08),0 2px 6px rgba(31,31,31,.04);
+  --radius:10px;
+  --radius-sm:6px;
+  --radius-lg:14px;
+  --serif:"Source Serif 4","Tiempos Text","Charter","Iowan Old Style",Georgia,serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
 }
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-.page.active { animation: fadeUp 0.4s ease-out; }
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+}
+a{color:var(--coral);text-decoration:none;transition:color .15s ease}
+a:hover{color:var(--coral-deep)}
+.mono{font-family:var(--mono)}
+.serif{font-family:var(--serif)}
 
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-.float-anim { animation: float 4s ease-in-out infinite; }
+.container{max-width:980px;margin:0 auto;padding:0 32px}
+@media(max-width:767px){.container{padding:0 20px}}
+
+/* ============ 顶部导航 ============ */
+.site-header{
+  background:rgba(250,249,245,.85);
+  backdrop-filter:saturate(180%) blur(10px);
+  -webkit-backdrop-filter:saturate(180%) blur(10px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.nav-inner{
+  max-width:980px;margin:0 auto;padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  height:60px;
+}
+@media(max-width:767px){.nav-inner{padding:0 20px}}
+.nav-brand{
+  font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.01em;
+  color:var(--text);display:flex;align-items:center;gap:10px;
+}
+.nav-brand-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--coral);
+  box-shadow:0 0 0 3px var(--coral-tint);
+}
+.nav-tabs{display:flex;gap:4px;overflow-x:auto}
+.nav-tab{
+  padding:8px 14px;font-size:14px;font-weight:500;color:var(--text-muted);
+  cursor:pointer;border-radius:var(--radius-sm);transition:all .15s ease;
+  white-space:nowrap;user-select:none;border:1px solid transparent;
+}
+.nav-tab:hover{color:var(--text);background:var(--bg-soft)}
+.nav-tab.active{color:var(--coral);background:var(--coral-tint);border-color:rgba(217,119,87,.2)}
+
+/* ============ 页面切换 ============ */
+.page{display:none;padding:48px 0 80px;min-height:70vh}
+.page.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ Hero 区 ============ */
+.hero{
+  padding:48px 0 56px;position:relative;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr auto;gap:48px;align-items:start;
+}
+.hero-left{max-width:560px}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--coral);margin-bottom:16px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.hero-eyebrow::before{
+  content:"";width:24px;height:1px;background:var(--coral);
+}
+.hero-name{
+  font-family:var(--serif);font-size:56px;font-weight:500;
+  letter-spacing:-0.025em;color:var(--text);
+  margin-bottom:8px;line-height:1.1;
+}
+.hero-name-cn{
+  font-size:17px;color:var(--text-muted);margin-bottom:24px;
+}
+.hero-tagline{
+  font-size:16px;color:var(--text-soft);line-height:1.75;margin-bottom:12px;
+}
+.hero-tagline strong{color:var(--text);font-weight:600}
+.hero-signature{
+  font-family:var(--serif);font-style:italic;font-size:14px;
+  color:var(--text-muted);margin-bottom:24px;padding-left:16px;
+  border-left:2px solid var(--coral);
+}
+.social-links{display:flex;gap:8px;flex-wrap:wrap}
+.social-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);
+  font-size:13px;color:var(--text-soft);transition:all .15s ease;
+  background:var(--bg-elevated);
+}
+.social-link:hover{
+  border-color:var(--coral);color:var(--coral);background:var(--coral-tint);
+}
+.social-link svg{flex-shrink:0;opacity:.7}
+
+.hero-right{display:flex;flex-direction:column;align-items:center;gap:20px}
+.hero-avatar{
+  width:128px;height:128px;border-radius:50%;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;
+  font-size:56px;
+}
+.hero-stats{
+  display:flex;flex-direction:column;gap:14px;padding:20px 24px;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius);min-width:180px;
+  box-shadow:var(--shadow-sm);
+}
+.stat-item{text-align:center}
+.stat-num{
+  font-family:var(--serif);font-size:28px;font-weight:500;
+  color:var(--coral);line-height:1;font-variant-numeric:tabular-nums;
+}
+.stat-label{
+  font-family:var(--mono);font-size:10px;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;
+}
+
+/* ============ 章节标题 ============ */
+.section-title{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  text-transform:uppercase;letter-spacing:0.12em;color:var(--coral);
+  margin-bottom:24px;display:flex;align-items:center;gap:12px;
+}
+.section-title::after{
+  content:"";flex:1;height:1px;background:var(--border);
+}
+section{margin-bottom:48px}
+
+/* ============ 项目展示卡 ============ */
+.project-list{display:flex;flex-direction:column;gap:12px}
+.project-card{
+  display:flex;gap:20px;align-items:stretch;padding:20px 24px;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all .2s ease;
+  text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);
+}
+.project-card:hover{
+  border-color:var(--coral);box-shadow:var(--shadow);
+  transform:translateY(-1px);
+}
+.project-icon{
+  width:72px;height:72px;border-radius:var(--radius);
+  background:var(--bg-soft);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;flex-shrink:0;
+}
+.project-info{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.project-title{
+  font-family:var(--serif);font-size:18px;font-weight:500;
+  color:var(--text);margin-bottom:6px;letter-spacing:-0.01em;
+}
+.project-desc{
+  font-size:14px;color:var(--text-muted);line-height:1.6;
+}
+.project-arrow{
+  align-self:center;color:var(--text-light);font-size:20px;
+  transition:transform .2s,color .2s;
+}
+.project-card:hover .project-arrow{color:var(--coral);transform:translateX(4px)}
+
+/* ============ 兴趣方向卡片 ============ */
+.interest-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;
+}
+.interest-card{
+  padding:20px;background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all .2s ease;
+  box-shadow:var(--shadow-sm);
+}
+.interest-card:hover{
+  border-color:var(--coral);transform:translateY(-2px);
+  box-shadow:var(--shadow);
+}
+.interest-icon{
+  font-size:24px;margin-bottom:10px;
+  width:40px;height:40px;border-radius:var(--radius-sm);
+  background:var(--coral-tint);display:flex;align-items:center;justify-content:center;
+}
+.interest-name{
+  font-family:var(--serif);font-size:15px;font-weight:500;
+  color:var(--text);margin-bottom:4px;
+}
+.interest-desc{font-size:13px;color:var(--text-muted);line-height:1.5}
+
+/* ============ 时间线 ============ */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:"";position:absolute;left:6px;top:10px;bottom:10px;
+  width:1px;background:linear-gradient(180deg,var(--coral) 0%,var(--border) 100%);
+}
+.timeline-item{position:relative;margin-bottom:28px;padding-left:8px}
+.timeline-item::before{
+  content:"";position:absolute;left:-28px;top:10px;
+  width:13px;height:13px;background:var(--bg-elevated);
+  border:2px solid var(--coral);border-radius:50%;
+}
+.timeline-period{
+  font-family:var(--mono);font-size:11px;color:var(--coral);
+  margin-bottom:4px;letter-spacing:0.05em;font-weight:500;
+}
+.timeline-title{
+  font-family:var(--serif);font-size:16px;font-weight:500;
+  color:var(--text);margin-bottom:4px;
+}
+.timeline-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* ============ About 卡片 ============ */
+.about-card{
+  padding:28px 32px;background:var(--bg-elevated);
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.about-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--coral) 0%,var(--coral-deep) 100%);
+}
+.about-name{
+  font-family:var(--serif);font-size:24px;font-weight:500;
+  color:var(--text);margin-bottom:4px;
+}
+.about-role{
+  font-family:var(--mono);font-size:12px;color:var(--coral);
+  text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;
+}
+.about-text{
+  font-size:14px;color:var(--text-soft);line-height:1.75;margin-bottom:12px;
+}
+.about-text:last-child{margin-bottom:0}
+
+/* ============ Links 卡片 ============ */
+.link-section{margin-bottom:32px}
+.link-section-title{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.link-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;
+}
+.link-card{
+  display:flex;align-items:center;gap:14px;padding:14px 18px;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius);transition:all .15s ease;
+  text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);
+}
+.link-card:hover{
+  border-color:var(--coral);background:var(--coral-tint);
+  transform:translateY(-1px);
+}
+.link-avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--bg-soft);
+  border:1px solid var(--border);display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0;
+}
+.link-name{font-weight:500;font-size:14px;color:var(--text)}
+.link-aff{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* ============ Footer ============ */
+footer{
+  padding:32px 0;border-top:1px solid var(--border);
+  text-align:center;color:var(--text-muted);font-size:13px;
+}
+footer a{color:var(--text-soft)}
+footer a:hover{color:var(--coral)}
+
+/* ============ 响应式 ============ */
+@media(max-width:767px){
+  .hero{padding:32px 0 40px}
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero-right{flex-direction:row;align-items:center;justify-content:flex-start;gap:24px}
+  .hero-avatar{width:88px;height:88px;font-size:40px}
+  .hero-name{font-size:40px}
+  .hero-stats{flex-direction:row;justify-content:space-around;min-width:0;flex:1}
+  .interest-grid{grid-template-columns:1fr 1fr}
+  .project-card{flex-direction:column;align-items:flex-start;gap:12px}
+  .project-arrow{display:none}
+  .nav-brand{font-size:18px}
+  .nav-tab{padding:6px 10px;font-size:13px}
+}
+
+/* ============ 装饰动画 ============ */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.float-anim{animation:float 5s ease-in-out infinite}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.pulse-anim{animation:pulse 2.5s ease-in-out infinite}
 </style>
 </head>
 <body>
 
-<div class="profile-banner">
-  <div class="profile-banner-stars" id="stars"></div>
-</div>
-
-<nav class="site-nav">
+<nav class="site-header">
   <div class="nav-inner">
-    <span class="nav-brand">wehou</span>
+    <span class="nav-brand">
+      <span class="nav-brand-dot pulse-anim"></span>
+      wehou
+    </span>
     <div class="nav-tabs">
       <div class="nav-tab active" data-page="home">Home</div>
       <div class="nav-tab" data-page="projects">Projects</div>
@@ -212,12 +355,14 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: cente
 
 <div class="container">
 
+<!-- ============ Home 页 ============ -->
 <div class="page active" id="page-home">
 <header class="hero">
   <div class="hero-grid">
-    <div>
+    <div class="hero-left">
+      <div class="hero-eyebrow">Learning Station · 学习小站</div>
       <h1 class="hero-name">wehou</h1>
-      <p class="hero-name-cn">欢迎来到wehou的学习小站</p>
+      <p class="hero-name-cn">欢迎来到 wehou 的学习小站</p>
       <p class="hero-tagline">
         Hello, I am <strong>wehou</strong>. Welcome to my learning station!<br>
         Exploring the world through coding, math, and poetry.<br>
@@ -248,38 +393,42 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: cente
 
 <section>
   <h2 class="section-title">Projects / 项目作品</h2>
-  <div class="paper-list">
+  <div class="project-list">
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
-      <div class="project-showcase-icon">🧮</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
-        <div class="project-showcase-desc">An interactive math puzzle game designed for 3rd graders. Practice addition, subtraction, multiplication and division through fun puzzles!</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
+      <div class="project-icon">🧮</div>
+      <div class="project-info">
+        <div class="project-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
+        <div class="project-desc">An interactive math puzzle game designed for 3rd graders. Practice addition, subtraction, multiplication and division through fun puzzles!</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
-      <div class="project-showcase-icon">📅</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">yzh的年历数学课堂 / Calendar Math Classroom</div>
-        <div class="project-showcase-desc">面向6-12岁小学生的互动式年历生成教学应用，通过可视化方式演示闰年判断、星期推算、年历生成背后的数学原理。An interactive calendar generation teaching app that visualizes the math behind leap years and weekday calculation.</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
+      <div class="project-icon">📅</div>
+      <div class="project-info">
+        <div class="project-title">yzh的年历数学课堂 / Calendar Math Classroom</div>
+        <div class="project-desc">面向6-12岁小学生的互动式年历生成教学应用，通过可视化方式演示闰年判断、星期推算、年历生成背后的数学原理。An interactive calendar teaching app that visualizes the math behind leap years and weekday calculation.</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
-      <div class="project-showcase-icon">🔲</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">贴瓷砖小工匠 / Tile Master Little Craftsman</div>
-        <div class="project-showcase-desc">数学趣味拼图游戏，用方块拼出各种图形，锻炼空间思维与创造力。A fun math tile game where kids build shapes with colorful blocks to develop spatial thinking.</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
+      <div class="project-icon">🔲</div>
+      <div class="project-info">
+        <div class="project-title">贴瓷砖小工匠 / Tile Master Little Craftsman</div>
+        <div class="project-desc">数学趣味拼图游戏，用方块拼出各种图形，锻炼空间思维与创造力。A fun math tile game where kids build shapes with colorful blocks to develop spatial thinking.</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/poem-game/" target="_blank">
-      <div class="project-showcase-icon">📜</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">三年级必备古诗18首 / Grade 3 Essential 18 Ancient Poems</div>
-        <div class="project-showcase-desc">Learn and memorize 18 essential ancient Chinese poems for 3rd grade students. Interactive poetry learning experience!</div>
+    <a class="project-card" href="https://wehou.github.io/poem-game/" target="_blank">
+      <div class="project-icon">📜</div>
+      <div class="project-info">
+        <div class="project-title">三年级必备古诗18首 / Grade 3 Essential 18 Ancient Poems</div>
+        <div class="project-desc">Learn and memorize 18 essential ancient Chinese poems for 3rd grade students. Interactive poetry learning experience!</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
   </div>
@@ -287,58 +436,89 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: cente
 
 <section>
   <h2 class="section-title">Interests / 兴趣方向</h2>
-  <div class="research-grid">
-    <div class="research-card"><div class="research-icon">🧮</div><div class="research-name">Math Puzzles / 数学拼图</div><div class="research-desc">Fun math puzzle games for learning and exploration.</div></div>
-    <div class="research-card"><div class="research-icon">📜</div><div class="research-name">Classical Poetry / 古诗词</div><div class="research-desc">Essential ancient Chinese poems for students.</div></div>
-    <div class="research-card"><div class="research-icon">💻</div><div class="research-name">Coding / 编程</div><div class="research-desc">Building interactive web projects and games.</div></div>
-    <div class="research-card"><div class="research-icon">🎮</div><div class="research-name">Interactive Games / 互动游戏</div><div class="research-desc">Learning through play and interactive experiences.</div></div>
+  <div class="interest-grid">
+    <div class="interest-card">
+      <div class="interest-icon">🧮</div>
+      <div class="interest-name">Math Puzzles / 数学拼图</div>
+      <div class="interest-desc">Fun math puzzle games for learning and exploration.</div>
+    </div>
+    <div class="interest-card">
+      <div class="interest-icon">📜</div>
+      <div class="interest-name">Classical Poetry / 古诗词</div>
+      <div class="interest-desc">Essential ancient Chinese poems for students.</div>
+    </div>
+    <div class="interest-card">
+      <div class="interest-icon">💻</div>
+      <div class="interest-name">Coding / 编程</div>
+      <div class="interest-desc">Building interactive web projects and games.</div>
+    </div>
+    <div class="interest-card">
+      <div class="interest-icon">🎮</div>
+      <div class="interest-name">Interactive Games / 互动游戏</div>
+      <div class="interest-desc">Learning through play and interactive experiences.</div>
+    </div>
   </div>
 </section>
 </div>
 
+<!-- ============ Projects 页 ============ -->
 <div class="page" id="page-projects">
 <section>
   <h2 class="section-title">Projects / 项目作品</h2>
-  <div class="paper-list">
+  <div class="project-list">
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
-      <div class="project-showcase-icon">🧮</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
-        <div class="project-showcase-desc">An interactive math puzzle game designed for 3rd graders. Practice addition, subtraction, multiplication and division through fun puzzles!</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
+      <div class="project-icon">🧮</div>
+      <div class="project-info">
+        <div class="project-title">三年级数学拼图游戏 / Grade 3 Math Puzzle Game</div>
+        <div class="project-desc">An interactive math puzzle game designed for 3rd graders. Practice addition, subtraction, multiplication and division through fun puzzles!</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
-      <div class="project-showcase-icon">📅</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">yzh的年历数学课堂 / Calendar Math Classroom</div>
-        <div class="project-showcase-desc">面向6-12岁小学生的互动式年历生成教学应用，通过可视化方式演示闰年判断、星期推算、年历生成背后的数学原理。An interactive calendar generation teaching app that visualizes the math behind leap years and weekday calculation.</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
+      <div class="project-icon">📅</div>
+      <div class="project-info">
+        <div class="project-title">yzh的年历数学课堂 / Calendar Math Classroom</div>
+        <div class="project-desc">面向6-12岁小学生的互动式年历生成教学应用，通过可视化方式演示闰年判断、星期推算、年历生成背后的数学原理。An interactive calendar teaching app that visualizes the math behind leap years and weekday calculation.</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
-      <div class="project-showcase-icon">🔲</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">贴瓷砖小工匠 / Tile Master Little Craftsman</div>
-        <div class="project-showcase-desc">数学趣味拼图游戏，用方块拼出各种图形，锻炼空间思维与创造力。A fun math tile game where kids build shapes with colorful blocks to develop spatial thinking.</div>
+    <a class="project-card" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
+      <div class="project-icon">🔲</div>
+      <div class="project-info">
+        <div class="project-title">贴瓷砖小工匠 / Tile Master Little Craftsman</div>
+        <div class="project-desc">数学趣味拼图游戏，用方块拼出各种图形，锻炼空间思维与创造力。A fun math tile game where kids build shapes with colorful blocks to develop spatial thinking.</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
-    <a class="project-showcase" href="https://wehou.github.io/poem-game/" target="_blank">
-      <div class="project-showcase-icon">📜</div>
-      <div class="project-showcase-info">
-        <div class="project-showcase-title">三年级必备古诗18首 / Grade 3 Essential 18 Ancient Poems</div>
-        <div class="project-showcase-desc">Learn and memorize 18 essential ancient Chinese poems for 3rd grade students. Interactive poetry learning experience!</div>
+    <a class="project-card" href="https://wehou.github.io/poem-game/" target="_blank">
+      <div class="project-icon">📜</div>
+      <div class="project-info">
+        <div class="project-title">三年级必备古诗18首 / Grade 3 Essential 18 Ancient Poems</div>
+        <div class="project-desc">Learn and memorize 18 essential ancient Chinese poems for 3rd grade students. Interactive poetry learning experience!</div>
       </div>
+      <div class="project-arrow">→</div>
     </a>
 
   </div>
 </section>
 
-<section style="margin-top: 40px;">
+<section>
   <h2 class="section-title">Project Timeline / 项目时间线</h2>
   <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-period">2026</div>
+      <div class="timeline-title">yzh的年历数学课堂 / Calendar Math Classroom</div>
+      <div class="timeline-desc">Interactive calendar teaching app visualizing leap year rules and weekday calculation for elementary students.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-period">2026</div>
+      <div class="timeline-title">贴瓷砖小工匠 / Tile Master Little Craftsman</div>
+      <div class="timeline-desc">A fun math tile game where kids build shapes with colorful blocks to develop spatial thinking.</div>
+    </div>
     <div class="timeline-item">
       <div class="timeline-period">2024</div>
       <div class="timeline-title">三年级必备古诗18首 / Grade 3 Essential Poems</div>
@@ -353,26 +533,23 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 </div>
 
+<!-- ============ About 页 ============ -->
 <div class="page" id="page-about">
 <section>
   <h2 class="section-title">About Me / 关于我</h2>
-  <div class="paper-list">
-    <div class="paper-item featured" style="cursor:default">
-      <div>
-        <div class="paper-title">wehou</div>
-        <div class="paper-meta"><span class="paper-venue">Learner & Creator / 学习者与创造者</span></div>
-        <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim); line-height:1.5;">
-          Hello! I'm wehou, a curious learner who loves exploring the world through coding, math, and poetry. I build fun interactive projects to make learning more enjoyable. Welcome to my little learning station on the internet!
-        </p>
-        <p style="margin-top:8px; font-size:0.85em; color:var(--text-dim); line-height:1.5;">
-          你好！我是wehou，一个充满好奇心的学习者，喜欢通过编程、数学和诗歌来探索世界。我制作有趣的互动项目，让学习变得更加愉快。欢迎来到我的网络学习小站！
-        </p>
-      </div>
-    </div>
+  <div class="about-card">
+    <div class="about-name">wehou</div>
+    <div class="about-role">Learner & Creator · 学习者与创造者</div>
+    <p class="about-text">
+      Hello! I'm wehou, a curious learner who loves exploring the world through coding, math, and poetry. I build fun interactive projects to make learning more enjoyable. Welcome to my little learning station on the internet!
+    </p>
+    <p class="about-text">
+      你好！我是 wehou，一个充满好奇心的学习者，喜欢通过编程、数学和诗歌来探索世界。我制作有趣的互动项目，让学习变得更加愉快。欢迎来到我的网络学习小站！
+    </p>
   </div>
 </section>
 
-<section style="margin-top: 40px;">
+<section>
   <h2 class="section-title">Learning Journey / 学习之旅</h2>
   <div class="timeline">
     <div class="timeline-item">
@@ -394,52 +571,53 @@ footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: cente
 </section>
 </div>
 
+<!-- ============ Links 页 ============ -->
 <div class="page" id="page-links">
 <section>
   <h2 class="section-title">Links & Resources / 链接与资源</h2>
 
-  <div class="collab-section">
-    <div class="collab-section-title">My Sites / 我的站点</div>
-    <div class="collab-grid">
-      <a class="collab-card" href="https://wehou.github.io" target="_blank">
-        <div class="collab-avatar">W</div>
-        <div><div class="collab-name">wehou.github.io</div><div class="collab-aff">GitHub Pages 主站</div></div>
+  <div class="link-section">
+    <div class="link-section-title">My Sites / 我的站点</div>
+    <div class="link-grid">
+      <a class="link-card" href="https://wehou.github.io" target="_blank">
+        <div class="link-avatar">🌐</div>
+        <div><div class="link-name">wehou.github.io</div><div class="link-aff">GitHub Pages 主站</div></div>
       </a>
-      <a class="collab-card" href="https://wehou.cc.cd" target="_blank">
-        <div class="collab-avatar">C</div>
-        <div><div class="collab-name">wehou.cc.cd</div><div class="collab-aff">自定义域名</div></div>
-      </a>
-    </div>
-  </div>
-
-  <div class="collab-section">
-    <div class="collab-section-title">Projects / 项目链接</div>
-    <div class="collab-grid">
-      <a class="collab-card" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
-        <div class="collab-avatar">🧮</div>
-        <div><div class="collab-name">Math Puzzle Game / 数学拼图游戏</div><div class="collab-aff">三年级数学拼图互动游戏</div></div>
-      </a>
-      <a class="collab-card" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
-        <div class="collab-avatar">📅</div>
-        <div><div class="collab-name">Calendar Math / 年历数学课堂</div><div class="collab-aff">互动式年历生成教学</div></div>
-      </a>
-      <a class="collab-card" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
-        <div class="collab-avatar">🔲</div>
-        <div><div class="collab-name">Tile Game / 贴瓷砖小工匠</div><div class="collab-aff">数学趣味拼图游戏</div></div>
-      </a>
-      <a class="collab-card" href="https://wehou.github.io/poem-game/" target="_blank">
-        <div class="collab-avatar">📜</div>
-        <div><div class="collab-name">Poem Game / 古诗游戏</div><div class="collab-aff">三年级必备古诗18首</div></div>
+      <a class="link-card" href="https://wehou.cc.cd" target="_blank">
+        <div class="link-avatar">🔗</div>
+        <div><div class="link-name">wehou.cc.cd</div><div class="link-aff">自定义域名</div></div>
       </a>
     </div>
   </div>
 
-  <div class="collab-section">
-    <div class="collab-section-title">Social / 社交</div>
-    <div class="collab-grid">
-      <a class="collab-card" href="https://github.com/wehou" target="_blank">
-        <div class="collab-avatar">G</div>
-        <div><div class="collab-name">GitHub</div><div class="collab-aff">@wehou</div></div>
+  <div class="link-section">
+    <div class="link-section-title">Projects / 项目链接</div>
+    <div class="link-grid">
+      <a class="link-card" href="https://wehou.github.io/math-puzzle-game/" target="_blank">
+        <div class="link-avatar">🧮</div>
+        <div><div class="link-name">Math Puzzle Game / 数学拼图游戏</div><div class="link-aff">三年级数学拼图互动游戏</div></div>
+      </a>
+      <a class="link-card" href="https://wehou.github.io/math-puzzle-game/calendar-math-teacher-%E6%97%A5%E5%8E%86%E6%95%B0%E5%AD%A6%E8%AF%BE%E5%A0%82.html" target="_blank">
+        <div class="link-avatar">📅</div>
+        <div><div class="link-name">Calendar Math / 年历数学课堂</div><div class="link-aff">互动式年历生成教学</div></div>
+      </a>
+      <a class="link-card" href="https://wehou.github.io/math-puzzle-game/tile-game.html" target="_blank">
+        <div class="link-avatar">🔲</div>
+        <div><div class="link-name">Tile Game / 贴瓷砖小工匠</div><div class="link-aff">数学趣味拼图游戏</div></div>
+      </a>
+      <a class="link-card" href="https://wehou.github.io/poem-game/" target="_blank">
+        <div class="link-avatar">📜</div>
+        <div><div class="link-name">Poem Game / 古诗游戏</div><div class="link-aff">三年级必备古诗18首</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="link-section">
+    <div class="link-section-title">Social / 社交</div>
+    <div class="link-grid">
+      <a class="link-card" href="https://github.com/wehou" target="_blank">
+        <div class="link-avatar">🐙</div>
+        <div><div class="link-name">GitHub</div><div class="link-aff">@wehou</div></div>
       </a>
     </div>
   </div>
@@ -465,23 +643,6 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
-
-(function() {
-  var container = document.getElementById('stars');
-  for (var i = 0; i < 60; i++) {
-    var star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.animationDelay = Math.random() * 3 + 's';
-    star.style.animationDuration = (2 + Math.random() * 3) + 's';
-    if (Math.random() > 0.7) {
-      star.style.width = '3px';
-      star.style.height = '3px';
-    }
-    container.appendChild(star);
-  }
-})();
 </script>
 
 </body>
