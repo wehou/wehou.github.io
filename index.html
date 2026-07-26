@@ -334,6 +334,23 @@ footer a:hover{color:var(--coral)}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 .pulse-anim{animation:pulse 2.5s ease-in-out infinite}
+
+/* ============ Hero 横幅图 ============ */
+.hero-banner{
+  position:relative;width:100%;
+  aspect-ratio:16/9;max-height:380px;
+  border-radius:var(--radius-lg);overflow:hidden;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  background:var(--bg-soft);
+}
+.hero-banner img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s ease;
+}
+.hero-banner:hover img{transform:scale(1.02)}
+@media(max-width:767px){
+  .hero-banner{aspect-ratio:4/3;max-height:280px;border-radius:var(--radius)}
+}
 </style>
 </head>
 <body>
@@ -381,7 +398,9 @@ footer a:hover{color:var(--coral)}
       </div>
     </div>
     <div class="hero-right">
-      <div class="hero-avatar float-anim">🚀</div>
+      <div class="hero-avatar float-anim">
+        <img src="images/avatar.png" alt="wehou avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+      </div>
       <div class="hero-stats">
         <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Projects</div></div>
         <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Curiosity</div></div>
@@ -390,6 +409,12 @@ footer a:hover{color:var(--coral)}
     </div>
   </div>
 </header>
+
+<section>
+  <div class="hero-banner">
+    <img src="images/scene.jpg" alt="wehou learning scene" loading="lazy">
+  </div>
+</section>
 
 <section>
   <h2 class="section-title">Projects / 项目作品</h2>
